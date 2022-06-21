@@ -4,7 +4,6 @@ import urllib.request as urllib2
 import codecs
 from datetime import datetime
 import random
-import threading as th
 
 from flask import Flask, jsonify, request
 from flask_sock import Sock
