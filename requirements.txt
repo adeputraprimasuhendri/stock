@@ -1,0 +1,3 @@
+Flask>=2.0.2
+pip install urllib2
+pip install codecs
