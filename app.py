@@ -27,27 +27,21 @@ def index(ws):
         for row in cr:
             n = random.randint(0, 100)
             ihsg = {
-                "open": int(float(row[1])),
-                "high": int(float(row[2])),
-                "low": int(float(row[3])),
-                "close": int(float(row[4])) + n,
-                "volume": int(float(row[6])) + n
+                "last": int(float(row[1]))+n,
+                "pts": n,
+                "percent": (n/100)*100,
             }
             n = random.randint(0, 100)
             dow = {
-                "open": int(float(row[1])),
-                "high": int(float(row[2])),
-                "low": int(float(row[3])),
-                "close": int(float(row[4])) + n,
-                "volume": int(float(row[6])) + n
+                "last": int(float(row[1]))+n,
+                "pts": n,
+                "percent": (n/100)*100,
             }
             n = random.randint(0, 100)
             snp = {
-                "open": int(float(row[1])),
-                "high": int(float(row[2])),
-                "low": int(float(row[3])),
-                "close": int(float(row[4])) + n,
-                "volume": int(float(row[6])) + n
+                "last": int(float(row[1]))+n,
+                "pts": n,
+                "percent": (n/100)*100,
             }
             ws.send({"ihsg":ihsg})
             time.sleep(1)
