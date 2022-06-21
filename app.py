@@ -13,7 +13,7 @@ sock = Sock(app)
 sock.init_app(app)
 
 @sock.route('/stock')
-def stock():
+def stock(ws):
     while True:
         stcd = 'BBCA'
         from_date = '1624320000'
