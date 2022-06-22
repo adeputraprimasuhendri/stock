@@ -15,40 +15,30 @@ sock.init_app(app)
 @sock.route('/index')
 def index(ws):
     while True:
-        stcd = 'BBCA'
-        from_date = '1624320000'
-        to_date = '1655856000'
-        interval = '1d'
-        url = 'https://query1.finance.yahoo.com/v7/finance/download/' + stcd + '.JK?period1=' + str(
-            from_date) + '&period2=' + str(to_date) + '&interval=' + interval + '&events=history'
-        response = urllib2.urlopen(url)
-        cr = csv.reader(codecs.iterdecode(response, 'utf-8'))
-        next(cr)
-        for row in cr:
-            n = random.randint(0, 100)
-            ihsg = {
-                "last": int(float(row[1]))+n,
-                "pts": n,
-                "percent": (n/100)*100,
-            }
-            n = random.randint(0, 100)
-            dow = {
-                "last": int(float(row[1]))+n,
-                "pts": n,
-                "percent": (n/100)*100,
-            }
-            n = random.randint(0, 100)
-            snp = {
-                "last": int(float(row[1]))+n,
-                "pts": n,
-                "percent": (n/100)*100,
-            }
-            ws.send({"ihsg":ihsg})
-            time.sleep(1)
-            ws.send({"dowjones": dow})
-            time.sleep(1)
-            ws.send({"snp": snp})
-            time.sleep(1)
+        ihsg = lastindex('%5EJKSE', '1624320000', '1655856000')
+        ws.send({"code" : 'JKSE', "desc":"IHSG", "data": ihsg})
+        spx = lastindex('%5ESPX', '1624320000', '1655856000')
+        ws.send({"code": 'SPX', "desc":"S&P 500", "data": spx})
+        ixic = lastindex('%5EIXIC', '1624320000', '1655856000')
+        ws.send({"code": 'IXIC', "desc":"NASDAQ", "data": ixic})
+        dji = lastindex('%5EDJI', '1624320000', '1655856000')
+        ws.send({"code": 'DJI', "desc": "DOW JONES", "data": dji})
+
+def lastindex(stcd, from_date, to_date):
+    interval = '1d'
+    url = 'https://query1.finance.yahoo.com/v7/finance/download/' + stcd + '?period1=' + str(
+        from_date) + '&period2=' + str(to_date) + '&interval=' + interval + '&events=history'
+    response = urllib2.urlopen(url)
+    cr = csv.reader(codecs.iterdecode(response, 'utf-8'))
+    next(cr)
+    for row in cr:
+        n = random.randint(0, 100)
+        data = {
+            "last": int(float(row[1])) + n,
+            "pts": n,
+            "percent": (n / 100) * 100,
+        }
+    return data
 
 @sock.route('/stock')
 def stock(ws):
